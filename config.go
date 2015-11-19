@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"gopkg.in/yaml.v2"
+	"encoding/json"
 )
 
 type IConfig interface {
@@ -18,7 +18,7 @@ func NewConfig(file string, c IConfig) error {
 		msg := fmt.Sprintf("Failed to open config: %s", err)
 		return errors.New(msg)
 	} else {
-		if err = yaml.Unmarshal(buf, c); err != nil {
+		if err = json.Unmarshal(buf, c); err != nil {
 			msg := fmt.Sprintf("Invalid config format: %s", err)
 			return errors.New(msg)
 		}
