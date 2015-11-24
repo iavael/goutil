@@ -5,26 +5,25 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"encoding/json"
+	"gopkg.in/yaml.v2"
 )
 
 type IConfig interface {
 	GetVer() int
-	GetConfVers() []int
 }
 
-func NewConfig(file string, c IConfig) error {
+func NewConfig(file string, c IConfig, vers []int) error {
 	if buf, err := ioutil.ReadFile(file); err != nil {
 		msg := fmt.Sprintf("Failed to open config: %s", err)
 		return errors.New(msg)
 	} else {
-		if err = json.Unmarshal(buf, c); err != nil {
+		if err = yaml.Unmarshal(buf, c); err != nil {
 			msg := fmt.Sprintf("Invalid config format: %s", err)
 			return errors.New(msg)
 		}
 	}
-	if !MemberOfSliceInt(c.GetVer(), c.GetConfVers()) {
-		msg := fmt.Sprintf("Unsupported config version: need %s", JoinInt(c.GetConfVers(), ", "))
+	if !MemberOfSlice(c.GetVer(), vers) {
+		msg := fmt.Sprintf("Unsupported config version %s: need %s", c.GetVer(), JoinInt(vers, ", "))
 		return errors.New(msg)
 	}
 	return nil

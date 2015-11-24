@@ -3,6 +3,8 @@ package goutil
 import (
 	"log"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 type Loglevel int
@@ -17,6 +19,22 @@ const (
 
 type Logger struct {
 	loglev Loglevel
+}
+
+func ParseLoglevel(level string) Loglevel {
+	switch {
+	case strings.EqualFold(level, "debug") || level == strconv.Itoa(int(DEBUG)):
+		return DEBUG
+	case strings.EqualFold(level, "info") || level == strconv.Itoa(int(INFO)):
+		return INFO
+	case strings.EqualFold(level, "warn") || level == strconv.Itoa(int(WARN)):
+		return WARN
+	case strings.EqualFold(level, "error") || level == strconv.Itoa(int(ERROR)):
+		return ERROR
+	case strings.EqualFold(level, "fatal") || level == strconv.Itoa(int(FATAL)):
+		return FATAL
+	}
+	return DEBUG
 }
 
 func getPrefix(tag string, f string) string {
