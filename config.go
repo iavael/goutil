@@ -10,6 +10,7 @@ import (
 
 type IConfig interface {
 	GetVer() int
+	Check() error
 }
 
 func NewConfig(file string, c IConfig, vers []int) error {
@@ -26,5 +27,6 @@ func NewConfig(file string, c IConfig, vers []int) error {
 		msg := fmt.Sprintf("Unsupported config version %s: need %s", c.GetVer(), JoinInt(vers, ", "))
 		return errors.New(msg)
 	}
-	return nil
+
+	return c.Check()
 }
