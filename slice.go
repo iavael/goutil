@@ -2,8 +2,8 @@ package goutil
 
 import (
 	"reflect"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func JoinInt(array []int, sep string) string {
@@ -18,7 +18,7 @@ func MemberOfSlice(element interface{}, slice interface{}) bool {
 	var (
 		eType = reflect.TypeOf(element)
 		sType = reflect.TypeOf(slice)
-		sVal = reflect.ValueOf(slice)
+		sVal  = reflect.ValueOf(slice)
 	)
 
 	if sType.Kind() != reflect.Slice {

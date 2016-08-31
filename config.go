@@ -8,11 +8,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Config interface
 type IConfig interface {
 	GetVer() int
 	Check() error
 }
 
+// Parse and validate YAML config
 func NewConfig(file string, c IConfig, vers []int) error {
 	if buf, err := ioutil.ReadFile(file); err != nil {
 		msg := fmt.Sprintf("Failed to open config: %s", err)
@@ -24,7 +26,7 @@ func NewConfig(file string, c IConfig, vers []int) error {
 		}
 	}
 	if !MemberOfSlice(c.GetVer(), vers) {
-		msg := fmt.Sprintf("Unsupported config version %s: need %s", c.GetVer(), JoinInt(vers, ", "))
+		msg := fmt.Sprintf("Unsupported config version %d: need %s", c.GetVer(), JoinInt(vers, ", "))
 		return errors.New(msg)
 	}
 

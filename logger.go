@@ -1,8 +1,8 @@
 package goutil
 
 import (
-	"log"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
