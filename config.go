@@ -8,13 +8,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Config interface
+// IConfig interface for checking version and general config validation
 type IConfig interface {
 	GetVer() int
 	Check() error
 }
 
-// Parse and validate YAML config
+// NewConfig for parsing and validating YAML config
 func NewConfig(file string, c IConfig, vers []int) error {
 	if buf, err := ioutil.ReadFile(file); err != nil {
 		msg := fmt.Sprintf("Failed to open config: %s", err)

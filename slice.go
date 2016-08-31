@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// JoinInt concatenates integers in one string with defined separator
 func JoinInt(array []int, sep string) string {
 	var buf []string
 	for _, v := range array {
@@ -14,6 +15,7 @@ func JoinInt(array []int, sep string) string {
 	return strings.Join(buf, sep)
 }
 
+// MemberOfSlice checks if object is element of slice
 func MemberOfSlice(element interface{}, slice interface{}) bool {
 	var (
 		eType = reflect.TypeOf(element)
@@ -41,6 +43,7 @@ func MemberOfSlice(element interface{}, slice interface{}) bool {
 	return false
 }
 
+// DiffSlices returns differense between two slices
 func DiffSlices(one interface{}, two interface{}) (interface{}, interface{}) {
 	var (
 		oneType = reflect.TypeOf(one)
