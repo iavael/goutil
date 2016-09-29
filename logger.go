@@ -60,7 +60,7 @@ func NewLogger(l Loglevel, s *syslog.Writer) *Logger {
 func (l *Logger) Fatal(f string, s ...interface{}) {
 	if FATAL <= l.loglev {
 		if l.syslog != nil {
-			l.syslog.Crit(fmt.Sprintf(f, s...))
+			l.syslog.Crit(getPrefix("FATAL", fmt.Sprintf(f, s...)))
 			os.Exit(1)
 		} else {
 			log.Fatalf(getPrefix("FATAL", f), s...)
@@ -72,7 +72,7 @@ func (l *Logger) Fatal(f string, s ...interface{}) {
 func (l *Logger) Error(f string, s ...interface{}) {
 	if ERROR <= l.loglev {
 		if l.syslog != nil {
-			l.syslog.Err(fmt.Sprintf(f, s...))
+			l.syslog.Err(getPrefix("ERROR", fmt.Sprintf(f, s...)))
 		} else {
 			log.Printf(getPrefix("ERROR", f), s...)
 		}
@@ -83,7 +83,7 @@ func (l *Logger) Error(f string, s ...interface{}) {
 func (l *Logger) Warn(f string, s ...interface{}) {
 	if WARN <= l.loglev {
 		if l.syslog != nil {
-			l.syslog.Warning(fmt.Sprintf(f, s...))
+			l.syslog.Warning(getPrefix("WARN", fmt.Sprintf(f, s...)))
 		} else {
 			log.Printf(getPrefix("WARN", f), s...)
 		}
@@ -94,7 +94,7 @@ func (l *Logger) Warn(f string, s ...interface{}) {
 func (l *Logger) Info(f string, s ...interface{}) {
 	if INFO <= l.loglev {
 		if l.syslog != nil {
-			l.syslog.Info(fmt.Sprintf(f, s...))
+			l.syslog.Info(getPrefix("INFO", fmt.Sprintf(f, s...)))
 		} else {
 			log.Printf(getPrefix("INFO", f), s...)
 		}
@@ -105,7 +105,7 @@ func (l *Logger) Info(f string, s ...interface{}) {
 func (l *Logger) Debug(f string, s ...interface{}) {
 	if DEBUG <= l.loglev {
 		if l.syslog != nil {
-			l.syslog.Debug(fmt.Sprintf(f, s...))
+			l.syslog.Debug(getPrefix("DEBUG", fmt.Sprintf(f, s...)))
 		} else {
 			log.Printf(getPrefix("DEBUG", f), s...)
 		}
