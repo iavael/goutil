@@ -3,6 +3,8 @@ package goutil
 import (
 	"fmt"
 	"log"
+	"log/syslog"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -22,6 +24,7 @@ const (
 // Logger struct
 type Logger struct {
 	loglev Loglevel
+	syslog *syslog.Writer
 }
 
 // ParseLoglevel function converts string representation of log levels to int
@@ -46,43 +49,65 @@ func getPrefix(tag string, f string) string {
 }
 
 // NewLogger creates new Logger object
-func NewLogger(l Loglevel) *Logger {
+func NewLogger(l Loglevel, s *syslog.Writer) *Logger {
 	return &Logger{
 		loglev: l,
+		syslog: s,
 	}
 }
 
 // Fatal wraps log.Fatalf with loglevel check
-func (l *Logger) Fatal(fmt string, s ...interface{}) {
+func (l *Logger) Fatal(f string, s ...interface{}) {
 	if FATAL <= l.loglev {
-		log.Fatalf(getPrefix("FATAL", fmt), s...)
+		if l.syslog != nil {
+			l.syslog.Crit(fmt.Sprintf(f, s...))
+			os.Exit(1)
+		} else {
+			log.Fatalf(getPrefix("FATAL", f), s...)
+		}
 	}
 }
 
 // Error wraps log.Printf with loglevel check
-func (l *Logger) Error(fmt string, s ...interface{}) {
+func (l *Logger) Error(f string, s ...interface{}) {
 	if ERROR <= l.loglev {
-		log.Printf(getPrefix("ERROR", fmt), s...)
+		if l.syslog != nil {
+			l.syslog.Err(fmt.Sprintf(f, s...))
+		} else {
+			log.Printf(getPrefix("ERROR", f), s...)
+		}
 	}
 }
 
 // Warn wraps log.Printf with loglevel check
-func (l *Logger) Warn(fmt string, s ...interface{}) {
+func (l *Logger) Warn(f string, s ...interface{}) {
 	if WARN <= l.loglev {
-		log.Printf(getPrefix("WARN", fmt), s...)
+		if l.syslog != nil {
+			l.syslog.Warning(fmt.Sprintf(f, s...))
+		} else {
+			log.Printf(getPrefix("WARN", f), s...)
+		}
 	}
 }
 
 // Info wraps log.Printf with loglevel check
-func (l *Logger) Info(fmt string, s ...interface{}) {
+func (l *Logger) Info(f string, s ...interface{}) {
 	if INFO <= l.loglev {
-		log.Printf(getPrefix("INFO", fmt), s...)
+		if l.syslog != nil {
+			l.syslog.Info(fmt.Sprintf(f, s...))
+		} else {
+			log.Printf(getPrefix("INFO", f), s...)
+		}
 	}
 }
 
 // Debug wraps log.Printf with loglevel check
-func (l *Logger) Debug(fmt string, s ...interface{}) {
+func (l *Logger) Debug(f string, s ...interface{}) {
 	if DEBUG <= l.loglev {
-		log.Printf(getPrefix("DEBUG", fmt), s...)
+		if l.syslog != nil {
+			l.syslog.Debug(fmt.Sprintf(f, s...))
+		} else {
+			log.Printf(getPrefix("DEBUG", f), s...)
+		}
 	}
 }
