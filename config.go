@@ -2,8 +2,8 @@ package goutil
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
@@ -17,16 +17,16 @@ type IConfig interface {
 // NewConfig for parsing and validating YAML config
 func NewConfig(file string, c IConfig, vers []int) error {
 	if buf, err := ioutil.ReadFile(file); err != nil {
-		msg := fmt.Sprintf("Failed to open config: %s", err)
+		msg := StrCat("Failed to open config: ", err.Error())
 		return errors.New(msg)
 	} else {
 		if err = yaml.Unmarshal(buf, c); err != nil {
-			msg := fmt.Sprintf("Invalid config format: %s", err)
+			msg := StrCat("Invalid config format: ", err.Error())
 			return errors.New(msg)
 		}
 	}
 	if !MemberOfSlice(c.GetVer(), vers) {
-		msg := fmt.Sprintf("Unsupported config version %d: need %s", c.GetVer(), JoinInt(vers, ", "))
+		msg := StrCat("Unsupported config version ", strconv.Itoa(c.GetVer()), ": need ", JoinInt(vers, ", "))
 		return errors.New(msg)
 	}
 

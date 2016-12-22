@@ -45,7 +45,7 @@ func ParseLoglevel(level string) Loglevel {
 }
 
 func getPrefix(tag string, f string) string {
-	return fmt.Sprintf("[%s] %s", tag, f)
+	return StrCat("[", tag, "] ", f)
 }
 
 // NewLogger creates new Logger object
