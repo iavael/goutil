@@ -14,7 +14,8 @@ type Loglevel int
 
 // Enum with logging levels
 const (
-	FATAL Loglevel = iota
+	NONE Loglevel = iota
+	FATAL
 	ERROR
 	WARN
 	INFO
@@ -40,6 +41,8 @@ func ParseLoglevel(level string) Loglevel {
 		return ERROR
 	case strings.EqualFold(level, "fatal") || level == strconv.Itoa(int(FATAL)):
 		return FATAL
+	case strings.EqualFold(level, "none") || level == strconv.Itoa(int(NONE)):
+		return NONE
 	}
 	return DEBUG
 }
