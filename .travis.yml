@@ -1,8 +1,13 @@
 language: go
 
-addons:
-  code_climate:
-    repo_token: b217597eff41f5f6db4090ce3a35647513c4cd588598daf28eed8fed925de2a4
-
 go:
-  - 1.7
+  - "1.11"
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - go test -coverprofile c.out -coverpkg=./... -race .
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULTlanguage: go
