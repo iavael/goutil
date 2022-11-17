@@ -2,7 +2,7 @@ package goutil
 
 import (
 	"errors"
-	"io/ioutil"
+	"os"
 	"strconv"
 
 	"gopkg.in/yaml.v3"
@@ -25,7 +25,7 @@ func NewConfig(file string, c IConfig, vers []int) error {
 		buf []byte
 		err error
 	)
-	if buf, err = ioutil.ReadFile(file); err != nil {
+	if buf, err = os.ReadFile(file); err != nil {
 		msg := StrCat("Failed to open config: ", err.Error())
 		return errors.New(msg)
 	}
@@ -47,7 +47,7 @@ func NewMultiConfig(file string, cfgver IConfigVer, cfgmap func(int) IConfig) (I
 		err error
 		cfg IConfig
 	)
-	if buf, err = ioutil.ReadFile(file); err != nil {
+	if buf, err = os.ReadFile(file); err != nil {
 		msg := StrCat("Failed to open config: ", err.Error())
 		return nil, errors.New(msg)
 	}
