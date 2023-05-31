@@ -1,9 +1,7 @@
-engines:
-  golint:
+plugins:
+  govet:
     enabled: true
   gofmt:
     enabled: true
-
-ratings:
-  paths:
-    - "**.go"
+  editorconfig:
+    enabled: true
